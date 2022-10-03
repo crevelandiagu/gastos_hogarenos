@@ -53,6 +53,17 @@ $ pip3 install -r requirements.txt
 ```
 ### Execution
 
+### Exportar variables de entorno
+
+del archivo .env.example llenar las variables y copiarlas en la terminal donde se esta ejecutando
+el proyecto con el siguiente comando
+
+```shell
+      export ENV=production
+```
+
+Dependiendo del ID como pycharm se puede exportar desde la configuracion para mas detalle
+https://peaku.co/es/preguntas/34856-%C2%BFcomo-establecer-variables-de-entorno-en-pycharm
 ### django Server
 
 
