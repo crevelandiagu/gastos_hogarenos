@@ -49,3 +49,11 @@ class AccountView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+    def get(self, request):
+        """
+        get acount's
+        """
+        documents = Account.objects.all()
+        serializer = AccountSerializer(documents, many=True)
+        return Response(serializer.data)
