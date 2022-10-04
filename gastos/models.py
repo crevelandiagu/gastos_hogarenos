@@ -1,8 +1,27 @@
 from django.db import models
+from datetime import datetime
 
 
-class Account(models.Model):
-    id = models.AutoField(primary_key=True)
+class Base(models.Model):
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+    updated_at = models.DateTimeField(
+        default=datetime.now,
+        blank=True
+    )
+    deleted_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Account(Base):
+
     name = models.CharField(max_length=250)
     balance = models.FloatField(null=True, blank=True, default=False)
 
@@ -12,13 +31,10 @@ class Account(models.Model):
                 }
 
 
-class Transaction(models.Model):
-    id = models.AutoField(primary_key=True)
+class Transaction(Base):
+
     amount = models.FloatField(null=True, blank=True, default=None)
     description = models.CharField(max_length=250)
     income = models.BooleanField(null=True, blank=True, default=False)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    accounts = models.ForeignKey(Account, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return {self.title
-                }

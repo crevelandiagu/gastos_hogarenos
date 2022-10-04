@@ -2,8 +2,10 @@ import os
 import json
 
 from .models import Account
+from .models import Transaction
 
 from .serializers import AccountSerializer
+from .serializers import AccountDetailSerializer
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -56,4 +58,18 @@ class AccountView(APIView):
         """
         documents = Account.objects.all()
         serializer = AccountSerializer(documents, many=True)
+        return Response(serializer.data)
+
+
+class AccountDetailView(APIView):
+
+    def get(self, request, id):
+        """
+        get details acount's
+        """
+
+        detail_acount = Account.objects.get(id=id)
+        detail_transaction = Transaction.objects.filter(accounts__id=id).order_by('-created_at')
+        obj = {'detail_acount': detail_acount, 'detail_transaction': detail_transaction}
+        serializer = AccountDetailSerializer(obj)
         return Response(serializer.data)
