@@ -41,3 +41,4 @@ class TestAccount(TestCase):
         respon = json.loads(response.content)['detail_transaction']
         respon[0].pop('created_at')
         self.assertEqual(transaction_1, respon[0])
+
