@@ -10,6 +10,7 @@ urlpatterns = [
     path('cuenta/', AccountView.as_view()),
     path('cuenta/<int:id_acount>/', AccountView.as_view()),
     path('detalle_cuenta/<int:id>', AccountDetailView.as_view()),
+    path('detalle_cuenta/<int:id>/<str:date>/', AccountDetailView.as_view()),
     path('transacion/<int:id_acount>', TransactionView.as_view()),
 
 ]
