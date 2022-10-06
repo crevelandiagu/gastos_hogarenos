@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime, timedelta
 
 from .models import Account
 from .models import Transaction
@@ -104,10 +105,40 @@ class AccountView(APIView):
 
 class AccountDetailView(APIView):
 
-    def get(self, request, id):
+    def detail_date(self, date, id):
+
+
+        data = date.split('-')
+        if len(data) != 3:
+            return Response(
+                {
+                    "success": False,
+                    "code": 400,
+                    "message": "The request is not valid",
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        anio = int(data[0])
+        mes = int(data[1])
+        print('a')
+        start_date = datetime(anio, mes, 1).strftime("%Y-%m-%d")
+        end_date = (datetime(anio + int(mes / 12), mes % 12 + 1, 1) + timedelta(days=-1)).strftime("%Y-%m-%d")
+
+        detail_acount = Account.objects.get(id=id)
+        detail_transaction = Transaction.objects.filter(accounts__id=id, created_at__range=(start_date, end_date)).order_by('-created_at')
+        obj = {'detail_acount': detail_acount, 'detail_transaction': detail_transaction}
+        serializer = AccountDetailSerializer(obj)
+
+        return Response(serializer.data)
+
+    def get(self, request, id, date=None):
         """
         get details acount's
         """
+        if date:
+
+            return self.detail_date(date, id)
 
         detail_acount = Account.objects.get(id=id)
         detail_transaction = Transaction.objects.filter(accounts__id=id).order_by('-created_at')
