@@ -24,7 +24,7 @@ class Health(APIView):
 
 class AccountView(APIView):
 
-    def post(self, request):
+    def post(self, request, id_acount=None):
         """
         Creates new acount
         """
@@ -43,6 +43,15 @@ class AccountView(APIView):
             balance=serializer.data['balance']
         )
         create_account.save()
+
+        create_transaction = Transaction(
+            amount=serializer.data['balance'],
+            description="balance inicia",
+            income=True,
+            accounts_id=create_account.id
+        )
+        create_transaction.save()
+
         return Response(
             {
                 "success": True,
@@ -53,13 +62,44 @@ class AccountView(APIView):
             status=status.HTTP_200_OK
         )
 
-    def get(self, request):
+    def get(self, request, id_acount=None):
         """
         get acount's
         """
         documents = Account.objects.all()
         serializer = AccountSerializer(documents, many=True)
         return Response(serializer.data)
+
+    def put(self, request, id_acount):
+        serializer = AccountSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                {
+                    "success": False,
+                    "code": 400,
+                    "message": "The request is not valid",
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        Account.objects.filter(id=id_acount).update(balance=serializer.data['balance'])
+
+        create_transaction = Transaction(
+            amount=serializer.data['balance'],
+            description="ajuste manual",
+            income=True,
+            accounts_id=id_acount
+        )
+        create_transaction.save()
+
+        return Response(
+            {
+                "success": True,
+                "code": 200,
+                "account": id_acount,
+            },
+            status=status.HTTP_200_OK
+        )
 
 
 class AccountDetailView(APIView):
@@ -99,6 +139,12 @@ class TransactionView(APIView):
             accounts_id=id_acount
         )
         create_transaction.save()
+
+        acount_user = Account.objects.get(id=id_acount)
+        new_balance = acount_user.balance + serializer.data['amount']\
+            if serializer.data['income'] is True else acount_user.balance - serializer.data['amount']
+
+        Account.objects.filter(id=id_acount).update(balance=new_balance)
         return Response(
             {
                 "success": True,

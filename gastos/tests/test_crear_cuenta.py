@@ -35,6 +35,6 @@ class TestAccount(TestCase):
             balance=self.account['balance']
         )
         create_account_2.save()
-        response = Client().get('/api/crear_cuenta/')
+        response = Client().get('/api/cuenta/')
         respon = json.loads(response.content)
         self.assertIn(self.account, respon)
