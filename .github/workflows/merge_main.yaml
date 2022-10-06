@@ -59,7 +59,7 @@ jobs:
       - name: Correr pruebas
         id: correr-pruebas
         if: echo ${{needs.merege-release-desarrollo.outputs.salida}}
-        run: python -m unittest -v
+        run: python manage.py test
       - name: Validar resultado con errores
         if: ${{ failure() }}
         env:
