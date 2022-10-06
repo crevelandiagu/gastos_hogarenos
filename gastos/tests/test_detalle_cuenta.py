@@ -5,7 +5,7 @@ from gastos.models import Account
 from gastos.models import Transaction
 from django.test import Client
 
-class TestAccount(TestCase):
+class TestDetailAccount(TestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -23,8 +23,9 @@ class TestAccount(TestCase):
         create_account_1.save()
         transaction_1 = {
             'amount': self.data_factory.pyfloat(),
-            'description': self.data_factory.word(),
+            'description': self.data_factory.name(),
             'income': True,
+            'id': 1
            }
 
         create_transaction_1 = Transaction(
