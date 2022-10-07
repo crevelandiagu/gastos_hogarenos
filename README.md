@@ -143,4 +143,7 @@ enviar en el commit el mensaje de 'DONE'.
 Para desplegar a main desde la rama develop
 se debe enviar el mensaje 'RELEASE'
 
+## Documentacion Request
 
+En el archivo 'Gastos Hogarenos.postman_collection.json' se encuentrar
+los diferentes curls para probar la app
