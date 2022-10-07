@@ -1,0 +1,9 @@
+curl http://127.0.0.1:8000/api/
+[
+{
+"title":"Django for Beginners",
+"subtitle":"Build websites with Python and Django",
+"author":"William S. Vincent",
+"isbn":"9781735467207"
+}
+]

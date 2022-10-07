@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from .models import Account
 from .models import Transaction
+from .querysets import crear_transaccion
 
 from .serializers import AccountSerializer
 from .serializers import AccountDetailSerializer
@@ -15,6 +16,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from django.shortcuts import get_object_or_404
+from django.db.models import F
 
 class Health(APIView):
     """Check avaiability"""
@@ -45,13 +47,13 @@ class AccountView(APIView):
         )
         create_account.save()
 
-        create_transaction = Transaction(
-            amount=serializer.data['balance'],
-            description="balance inicia",
-            income=True,
-            accounts_id=create_account.id
-        )
-        create_transaction.save()
+        keyword = {
+            "amount": serializer.data['balance'],
+            "description": "balance inicia",
+            "income": True,
+            "accounts_id": create_account.id
+        }
+        crear_transaccion(**keyword)
 
         return Response(
             {
@@ -85,13 +87,13 @@ class AccountView(APIView):
 
         Account.objects.filter(id=id_acount).update(balance=serializer.data['balance'])
 
-        create_transaction = Transaction(
-            amount=serializer.data['balance'],
-            description="ajuste manual",
-            income=True,
-            accounts_id=id_acount
-        )
-        create_transaction.save()
+        keyword = {
+            "amount": serializer.data['balance'],
+            "description": "ajuste manual",
+            "income": True,
+            "accounts_id": id_acount
+        }
+        crear_transaccion(**keyword)
 
         return Response(
             {
@@ -163,13 +165,14 @@ class TransactionView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
-        create_transaction = Transaction(
-            amount=serializer.data['amount'],
-            description=serializer.data['description'],
-            income=serializer.data['income'],
-            accounts_id=id_acount
-        )
-        create_transaction.save()
+
+        keyword = {
+            "amount": serializer.data['amount'],
+            "description": serializer.data['description'],
+            "income": serializer.data['income'],
+            "accounts_id": id_acount
+        }
+        crear_transaccion(**keyword)
 
         acount_user = Account.objects.get(id=id_acount)
         new_balance = acount_user.balance + serializer.data['amount']\
@@ -208,6 +211,48 @@ class TransactionView(APIView):
                 "success": True,
                 "code": 200,
                 "message": "Transation was delete"
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class TransactionInterAcountView(APIView):
+
+    def post(self, request):
+        """
+        Creates new acount
+        """
+        data = request.data
+        get_object_or_404(Account, id=data['from']['id'])
+        get_object_or_404(Account, id=data['to']['id'])
+        # from
+        amount = data['from']['balance']
+
+        keyword_from = {
+            "amount": amount,
+            "description": "movimiento entre cuentas",
+            "income": False,
+            "accounts_id": data['from']['id']
+        }
+        crear_transaccion(**keyword_from)
+
+        Account.objects.filter(id=data['from']['id']).update(balance=F('balance') - amount)
+
+        # to
+        keyword_to = {
+            "amount": amount,
+            "description": "movimiento entre cuentas",
+            "income": True,
+            "accounts_id": data['to']['id']
+        }
+        crear_transaccion(**keyword_to)
+
+        Account.objects.filter(id=data['to']['id']).update(balance=F('balance') + amount)
+        return Response(
+            {
+                "success": True,
+                "code": 200,
+                "message": "Transation done"
             },
             status=status.HTTP_200_OK
         )

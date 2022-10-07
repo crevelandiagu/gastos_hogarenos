@@ -26,7 +26,8 @@ class Account(Base):
     balance = models.FloatField(null=True, blank=True, default=False)
 
     def __str__(self):
-        return {"name": self.name,
+        return {
+                "name": self.name,
                 "balance": self.balance,
                 }
 
@@ -37,4 +38,12 @@ class Transaction(Base):
     description = models.CharField(max_length=250)
     income = models.BooleanField(null=True, blank=True, default=False)
     accounts = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return {
+                "amount": self.amount,
+                "description": self.description,
+                "income": self.income,
+                }
+
 
