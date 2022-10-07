@@ -64,8 +64,13 @@ el proyecto con el siguiente comando
 
 Dependiendo del ID como pycharm se puede exportar desde la configuracion para mas detalle
 https://peaku.co/es/preguntas/34856-%C2%BFcomo-establecer-variables-de-entorno-en-pycharm
-### django Server
+### Django Server
 
+Iniciar aplicacion
+
+```sh
+$   python manage.py makemigrations 
+```
 
 ```sh
 $   python manage.py migrate
@@ -75,11 +80,53 @@ $   python manage.py migrate
 $  python manage.py runserver
 ```
 
+En la siguiente url se encutra la documentacion con swagger y rdoc
+
+```sh
+http://localhost:8000/swagger/
+http://localhost:8000/redoc/
+```
+
+Para crear super usuario y poder ingresar al admin
+
+```sh
+$  python manage.py createsuperuser
+```
+
+link del admin
+
+```sh
+http://localhost:8000/admin/
+```
 
 <!-- ARCHITECTURE -->
-## Architecture
+## Resumen Queries
 
+- Crear cuenta
+![](./imagenes_queries/crear_cuenta.png)
 
+- Lista cuenta
+![](./imagenes_queries/lista_cuenta.png)
+
+- Detalle cuenta usuario 
+![](./imagenes_queries/Detalle_cuenta_usuario.png)
+
+- Crear transaccion
+![](./imagenes_queries/crear_transaccion.png)
+
+- Borrar_transaccion
+![](./imagenes_queries/borrar_transaccion.png)
+
+- Actualizar balance cuenta
+![](./imagenes_queries/actualizar_balance_cuenta.png)
+
+- Detalle_transaciones_fecha
+![](./imagenes_queries/detalle_transaciones_fecha.png)
+
+- Transaciones_entre_cuentas
+![](./imagenes_queries/transaciones_entre_cuentas.png)
+
+  
 <!-- CONTACT -->
 ## Contact
 
