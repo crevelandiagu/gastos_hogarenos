@@ -99,36 +99,49 @@ link del admin
 http://localhost:8000/admin/
 ```
 
-<!-- ARCHITECTURE -->
+
 ## Resumen Queries
 
 - Crear cuenta
+
 ![](./imagenes_queries/crear_cuenta.png)
 
 - Lista cuenta
+
 ![](./imagenes_queries/lista_cuenta.png)
 
 - Detalle cuenta usuario 
+
 ![](./imagenes_queries/Detalle_cuenta_usuario.png)
 
 - Crear transaccion
+
 ![](./imagenes_queries/crear_transaccion.png)
 
 - Borrar_transaccion
+
 ![](./imagenes_queries/borrar_transaccion.png)
 
 - Actualizar balance cuenta
+
 ![](./imagenes_queries/actualizar_balance_cuenta.png)
 
 - Detalle_transaciones_fecha
+
 ![](./imagenes_queries/detalle_transaciones_fecha.png)
 
 - Transaciones_entre_cuentas
+
 ![](./imagenes_queries/transaciones_entre_cuentas.png)
 
   
-<!-- CONTACT -->
-## Contact
+## Gitflow
+
+Para cada HU (historia de usuari) termianda, se debe
+enviar en el commit el mensaje de 'DONE'.
+
+Para desplegar a main desde la rama develop
+se debe enviar el mensaje 'RELEASE'
 
 
 
